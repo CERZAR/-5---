@@ -435,20 +435,20 @@ double get_mark(int delta)
 	switch (delta)
 	{
 	case 0: return 1;
-	case 1: return 3;
-	case 2: return 4;
-	case 3: return 5;
-	case 4: return 6;
-	case 5: return 7;
-	case 6: return 8;
-	case 7: return 9;
-	case -1: return pow(3, -1);
-	case -2: return pow(4, -1);
-	case -3: return pow(5, -1);
-	case -4: return pow(6, -1);
-	case -5: return pow(7, -1);
-	case -6: return pow(8, -1);
-	case -7: return pow(9, -1);
+	case 1: return 2;
+	case 2: return 3;
+	case 3: return 4;
+	case 4: return 5;
+	case 5: return 6;
+	case 6: return 7;
+	case 7: return 8;
+	case -1: return pow(2, -1);
+	case -2: return pow(3, -1);
+	case -3: return pow(4, -1);
+	case -4: return pow(5, -1);
+	case -5: return pow(6, -1);
+	case -6: return pow(7, -1);
+	case -7: return pow(8, -1);
 	default: return 1;
 	}
 }
@@ -513,11 +513,27 @@ int method_4(std::vector<alternative> alternatives, std::vector<criterion> crite
 	std::vector<std::vector<double>> normalized_by_string_vectors;
 	for (size_t i = 0; i < 5; ++i)
 		normalized_by_string_vectors.push_back(normalise_matrix_by_string(compare_vector[i]));
+	std::vector<double> os;
+	double sum;
+	for (size_t i = 0; i < 5; ++i)
+	{
+		double colomn_sum;
+		sum = 0;
+		for (size_t j = 0; j < 4; ++j)
+		{
+			colomn_sum = 0;
+			for (size_t k = 0; k < 4; ++k)
+				colomn_sum += compare_vector[i][k][j];
+			sum += colomn_sum * normalized_by_string_vectors[i][j];
+		}
+		os.push_back( ((sum - 4) / 3) / 0.9 );
+	}
+
 	for (int i = 0; i < 5; ++i)
 	{
 		if (i != 4) std::cout << "Compare matrix for " << criteria[i].name << ":\n";
 		else std::cout << "Matrix for assesment criteria priorities\n";
-		string_delimetr(98, '_');
+		string_delimetr(98, '-');
 		for (size_t j = 0; j < alternatives.size(); ++j)
 		{
 			if (i != 4) std::cout << "	     " << alternatives[j].name;
@@ -545,7 +561,8 @@ int method_4(std::vector<alternative> alternatives, std::vector<criterion> crite
 			std::cout << std::fixed << std::setprecision(2);
 			line;
 		}
-		string_delimetr(98, '_');
+		string_delimetr(98, '-');
+		std::cout << "Consistency relation: " << os[i] << "\n\n\n";
 	}
 	std::vector<std::vector<double>> matrix;
 	for (int i = 0; i < 4; ++i)
